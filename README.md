@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/roli-lpci/quick-gate-python/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![CI](https://github.com/roli-lpci/quick-gate-python/actions/workflows/ci.yml/badge.svg)](https://github.com/roli-lpci/quick-gate-python/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/pygate-ci)](https://pypi.org/project/pygate-ci/)
 
 Deterministic quality gate CLI for Python projects with bounded auto-repair and structured escalation evidence.
 
