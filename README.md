@@ -1,8 +1,8 @@
 # PyGate
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/roli-lpci/pygate/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/roli-lpci/quick-gate-python/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
-[![CI](https://github.com/roli-lpci/pygate/actions/workflows/ci.yml/badge.svg)](https://github.com/roli-lpci/pygate/actions/workflows/ci.yml)
+[![CI](https://github.com/roli-lpci/quick-gate-python/actions/workflows/ci.yml/badge.svg)](https://github.com/roli-lpci/quick-gate-python/actions/workflows/ci.yml)
 
 Deterministic quality gate CLI for Python projects with bounded auto-repair and structured escalation evidence.
 
@@ -100,7 +100,7 @@ All artifacts are written to `.pygate/`:
 | `repair-report.json` | Repair attempt history (on success) |
 | `escalation.json` | Escalation reason and evidence (on failure) |
 
-JSON Schema files for all artifact types are available in [`schemas/`](https://github.com/roli-lpci/pygate/tree/main/schemas) for downstream validation and code generation. See [`demo/artifacts/`](https://github.com/roli-lpci/pygate/tree/main/demo/artifacts) for sample output.
+JSON Schema files for all artifact types are available in [`schemas/`](https://github.com/roli-lpci/quick-gate-python/tree/main/schemas) for downstream validation and code generation. See [`demo/artifacts/`](https://github.com/roli-lpci/quick-gate-python/tree/main/demo/artifacts) for sample output.
 
 ## Repair Loop
 
@@ -172,7 +172,7 @@ PyGate ships with a composite GitHub Action for CI integration:
 
 ```yaml
 - uses: actions/checkout@v4
-- uses: roli-lpci/pygate/.github/actions/pygate@main
+- uses: roli-lpci/quick-gate-python/.github/actions/pygate@main
   with:
     mode: canary          # or "full"
     repair: "true"        # attempt auto-repair on failures
@@ -200,8 +200,8 @@ The action detects changed files from the PR, runs gates, optionally repairs, an
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/roli-lpci/pygate/blob/main/CONTRIBUTING.md) for development setup and guidelines.
+See [CONTRIBUTING.md](https://github.com/roli-lpci/quick-gate-python/blob/main/CONTRIBUTING.md) for development setup and guidelines.
 
 ## License
 
-[Apache 2.0](https://github.com/roli-lpci/pygate/blob/main/LICENSE)
+[Apache 2.0](https://github.com/roli-lpci/quick-gate-python/blob/main/LICENSE)

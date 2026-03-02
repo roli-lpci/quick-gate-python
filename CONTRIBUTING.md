@@ -14,7 +14,7 @@ Thank you for your interest in contributing to PyGate! This guide will help you 
 ### Install
 
 ```bash
-git clone https://github.com/roli-lpci/pygate.git
+git clone https://github.com/roli-lpci/quick-gate-python.git
 cd pygate
 python -m venv .venv
 source .venv/bin/activate
@@ -96,8 +96,8 @@ This requires `pygate`, `ruff`, `pyright`, and `pytest` (with `pytest-json-repor
 
 ## Reporting Issues
 
-- Use the [bug report template](https://github.com/roli-lpci/pygate/issues/new?template=bug_report.yml) for bugs.
-- Use the [feature request template](https://github.com/roli-lpci/pygate/issues/new?template=feature_request.yml) for ideas.
+- Use the [bug report template](https://github.com/roli-lpci/quick-gate-python/issues/new?template=bug_report.yml) for bugs.
+- Use the [feature request template](https://github.com/roli-lpci/quick-gate-python/issues/new?template=feature_request.yml) for ideas.
 
 ## License
 

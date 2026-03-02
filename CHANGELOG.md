@@ -25,5 +25,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Composite GitHub Action for CI integration
 - Structured artifacts: failures.json, run-metadata.json, agent-brief.json/md, repair-report.json, escalation.json
 
-[Unreleased]: https://github.com/roli-lpci/pygate/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/roli-lpci/pygate/releases/tag/v0.1.0
+[Unreleased]: https://github.com/roli-lpci/quick-gate-python/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/roli-lpci/quick-gate-python/releases/tag/v0.1.0
