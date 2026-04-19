@@ -1,13 +1,47 @@
 # PyGate
 
+Python CI failures are noisy, tool-specific, and expensive to triage when Ruff, Pyright, and pytest all disagree about what matters first.
+
+PyGate turns those gate results into one deterministic Python quality gate with bounded auto-repair and structured escalation evidence for humans or agents.
+
+- "The PR failed, but I have to dig through Ruff, Pyright, and pytest separately to understand why."
+- "We want fail-fast Python CI, not another lint dashboard."
+- "Auto-fix should stop when it stops helping instead of thrashing the repo."
+- "If repair cannot finish the job, I want a clean escalation artifact instead of a pile of logs."
+
+```bash
+pip install pygate-ci
+```
+
+```bash
+pygate summarize --input demo/artifacts/failures.json
+```
+
+```json
+{
+  "brief_json_path": ".pygate/agent-brief.json",
+  "brief_md_path": ".pygate/agent-brief.md",
+  "status": "fail"
+}
+```
+
+**When To Use It**
+
+Use PyGate when you want one deterministic Python CI gate that can normalize Ruff, Pyright, and pytest output, attempt bounded deterministic repair, and escalate with machine-readable evidence when it cannot finish safely.
+
+**When Not To Use It**
+
+Do not use PyGate as a generic lint aggregator, a semantic code fixer, or a replacement for the underlying tools. It is a fail-fast gate-and-escalate wrapper around them.
+
+![pygate preview](assets/preview.png)
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/roli-lpci/quick-gate-python/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![CI](https://github.com/roli-lpci/quick-gate-python/actions/workflows/ci.yml/badge.svg)](https://github.com/roli-lpci/quick-gate-python/actions/workflows/ci.yml)
 [![PyPI version](https://img.shields.io/pypi/v/pygate-ci)](https://pypi.org/project/pygate-ci/)
 
-Deterministic quality gate CLI for Python projects with bounded auto-repair and structured escalation evidence.
-
-**PyGate is not a lint aggregator.** It is an AI repair interface for Python CI — normalizing output from ruff, pyright, and pytest into a unified schema, running bounded deterministic repair loops, and producing agent-friendly briefs when human (or model) intervention is needed.
+**PyPI package:** `pygate-ci`  
+**CLI command:** `pygate`
 
 ---
 

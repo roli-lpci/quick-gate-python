@@ -1,0 +1,7 @@
+$ pygate summarize --input demo/artifacts/failures.json
+
+{
+  "brief_json_path": ".pygate/agent-brief.json",
+  "brief_md_path": ".pygate/agent-brief.md",
+  "status": "fail"
+}

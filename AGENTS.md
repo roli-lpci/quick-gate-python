@@ -1,106 +1,50 @@
 # AGENTS.md
 
-## Commands
+PyGate is a deterministic Python CI gate that wraps Ruff, Pyright, and pytest and can escalate with structured evidence.
 
-- `pip install -e ".[dev]"` -- Install with dev dependencies
-- `pytest` -- Run all 140 tests
-- `pytest tests/test_run_command.py -v` -- Single test module
-- `ruff check src/pygate/` -- Lint
-- `ruff check src/pygate/ --fix` -- Lint with auto-fix
-- `pyright src/pygate/` -- Type check (basic mode)
-- `python -m build` -- Build wheel and sdist
-- `pygate run` -- Run all quality gates
-- `pygate repair --max-attempts 3` -- Auto-repair lint failures
-- `pygate summarize` -- Generate agent-readable brief
+## Use it for
 
-## Testing
+- running one fail-fast gate over Python lint, typecheck, and test output
+- generating machine-readable artifacts for follow-up agents or humans
+- attempting bounded deterministic repair before escalating
 
-- Framework: `pytest` (config in `pyproject.toml` under `[tool.pytest.ini_options]`)
-- Test location: `tests/`, one file per source module
-- Fixtures: `tests/conftest.py` + JSON fixtures in `tests/fixtures/`
-- All tests run offline — no subprocess execution, all gate outputs are mocked
-- Run single test: `pytest tests/test_gates_ruff.py::test_ruff_parse -v`
+## Do not use it for
 
-## Project Structure
+- replacing Ruff, Pyright, or pytest
+- unbounded auto-fixing
+- semantic code repair beyond deterministic lint-safe edits
 
-```
-src/pygate/
-  cli.py               # Argument parsing, subcommand dispatch
-  run_command.py        # `pygate run` — orchestrates gate execution
-  repair_command.py     # `pygate repair` — bounded auto-fix loop (ruff --fix)
-  summarize_command.py  # `pygate summarize` — agent brief from JSON artifacts
-  gates/               # Individual gate implementations
-    ruff.py            # Ruff lint gate (JSON output parsing)
-    pyright.py         # Pyright type-check gate
-    pytest_gate.py     # Pytest gate (--json-report parsing)
-  models.py            # Pydantic models (GateResult, Failure, Escalation, etc.)
-  config.py            # pygate.toml / pyproject.toml config loading
-  constants.py         # Exit codes, default paths
-  exec.py              # Subprocess execution wrapper
-  env.py               # Environment detection (CI, tool availability)
-  fs.py                # File operations (artifact writes)
-  deterministic_fix.py # Safe ruff --fix wrapper with rollback
-schemas/               # JSON schemas for all artifact types
-demo/artifacts/        # Example output from each command
+## Minimal commands
+
+```bash
+pip install -e ".[dev]"
+pygate --help
+pygate summarize --input demo/artifacts/failures.json
+pytest -q
+ruff check src/ tests/
+pyright src/
 ```
 
-## Code Style
+## Output shape
 
-- Python 3.10+ required (`from __future__ import annotations` in all modules)
-- Pydantic v2 `BaseModel` for all structured data (not dataclasses)
-- `str(Enum)` for status values (`GateStatus.PASS`, `RunMode.CANARY`, etc.)
-- Ruff line length: 120, rules: `E, F, W, I, UP, B, SIM`
-- Pyright basic mode
-- Build system: hatchling
+- `pygate run`: writes `.pygate/failures.json` and `.pygate/run-metadata.json`
+- `pygate summarize`: writes `.pygate/agent-brief.json` and `.pygate/agent-brief.md`
+- `pygate repair`: writes `.pygate/repair-report.json` or `.pygate/escalation.json`
 
-Good:
-```python
-from pydantic import BaseModel, Field
+## Success means
 
-class GateResult(BaseModel):
-    gate: str
-    status: GateStatus
-    failures: list[Failure] = Field(default_factory=list)
-    duration_ms: int = 0
-```
+- gate results are normalized into a stable schema
+- deterministic repair stops within the configured budget
+- escalation artifacts explain what blocked automatic completion
 
-Bad:
-```python
-# Don't use raw dicts for gate results
-result = {"gate": "ruff", "status": "pass", "failures": []}
+## Common failure cases
 
-# Don't use dataclasses — this project uses Pydantic
-@dataclass
-class GateResult:
-    gate: str
-```
+- required underlying tools are not installed in the target environment
+- users expect PyGate to invent fixes for semantic failures
+- downstream automation ignores the escalation codes and retries blindly
 
-## Git Workflow
+## Maintainer notes
 
-- Branch from `main`
-- Conventional commits: `feat:`, `fix:`, `test:`, `docs:`, `chore:`
-- Run `pytest` and `ruff check` before pushing
-- JSON schemas in `schemas/` must stay in sync with Pydantic models in `models.py`
-
-## Boundaries
-
-**Always:**
-- Run `pytest` after modifying source files
-- Keep Pydantic v2 as the modeling library
-- Maintain Python 3.10+ compatibility
-- Update JSON schemas when changing Pydantic models
-- Use `from __future__ import annotations` in every module
-
-**Ask first:**
-- Adding new runtime dependencies (currently only pydantic + tomli)
-- Adding new gate types (ruff/pyright/pytest are the current three)
-- Changing exit codes in `constants.py`
-- Modifying the repair loop bounds or retry logic
-- Changing artifact output format (breaks downstream consumers)
-
-**Never:**
-- Execute subprocess commands in tests (all gate outputs are mocked)
-- Use dataclasses instead of Pydantic models
-- Remove or weaken the bounded repair loop (max-attempts is a safety constraint)
-- Commit real project output to `demo/artifacts/` (use synthetic examples)
-- Break JSON schema backward compatibility without a version bump
+- keep artifact schemas aligned with the Pydantic models
+- keep the repair loop bounded and explicit
+- keep CLI examples in README runnable against demo artifacts
