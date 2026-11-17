@@ -24,7 +24,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
 
-      - uses: hermes-labs-ai/quick-gate-python@aef81b5e832f98aaef02b0a1f64f8eed277e92f1
+      - uses: hermes-labs-ai/quick-gate-python@8d36905ed1bb9174c121d13020a400ef4e8b20cb
         with:
           mode: canary          # or "full" to include caller-installed tests
           python-version: "3.12"
